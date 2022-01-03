@@ -1,5 +1,5 @@
-import ErrorPage from "../../UIComponents/ErrorPage";
-import BackButton from "../../UIComponents/BackButton";
+import ErrorPage from "../../Elements/ErrorPage";
+import BackButton from "../../Elements/BackButton";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import {
@@ -11,9 +11,14 @@ import { getActorsList } from "../../../ducks/actors/operations";
 import { useState, useEffect } from "react";
 import ActorsInMovie from "./ActorsInMovie";
 import DirectorInMovie from "./DirectorInMovie";
-import defaultimg from "../../../images/default-movie.png"
+import defaultimg from "../../../images/default-movie.png";
 import DeleteModal from "./DeleteModal";
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next";
+import {
+  selectMovieById,
+  selectActorsFromMovie,
+} from "../../../ducks/movies/selectors";
+import { selectAllPeople } from "../../../ducks/people/selectors";
 
 function MovieDetail({
   getPeopleList,
@@ -31,12 +36,14 @@ function MovieDetail({
   actors,
 }) {
   const [showModal, setShowModal] = useState(false);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   useEffect(() => {
-    getPeopleList();
-    getMoviesList();
-    getActorsList();
+    if (people.length === 0) {
+      getPeopleList();
+      getMoviesList();
+      getActorsList();
+    }
   }, []);
 
   const handleDelete = () => {
@@ -53,7 +60,12 @@ function MovieDetail({
 
   return (
     <div>
-      <DeleteModal showModal={showModal} setShowModal={setShowModal} handleDelete={handleDelete}/>
+      <DeleteModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        handleDelete={handleDelete}
+        canYouDelete={actors.length === 0}
+      />
       {isLoadingMovies | isLoadingPeople | isLoadingActors ? (
         <h1>Loading...</h1>
       ) : (
@@ -77,16 +89,23 @@ function MovieDetail({
           </div>
           <div className="bg-white w-full h-full mt-8 flex items-center">
             <div className="w-24 md:w-64">
-              <img src={movieByID.image_url ? movieByID.image_url : defaultimg} alt="" />
+              <img
+                src={movieByID.image_url ? movieByID.image_url : defaultimg}
+                alt=""
+              />
             </div>
             <div className="ml-4">
               <h2 className="text-gray-400 text-sm">{t(movieByID.genre)}</h2>
               <h1 className="text-black text-md">{movieByID.title}</h1>
-              <h2 className="text-gray-400 text-sm my-1">{movieByID.release_date.substring(0,10)}</h2>
-              <h2 className="text-gray-400 text-sm italic">{movieByID.description}</h2>
+              <h2 className="text-gray-400 text-sm my-1">
+                {movieByID.release_date.substring(0, 10)}
+              </h2>
+              <h2 className="text-gray-400 text-sm italic">
+                {movieByID.description}
+              </h2>
             </div>
           </div>
-          <DirectorInMovie people={people} movie={movieByID}/>
+          <DirectorInMovie people={people} movie={movieByID} />
           <ActorsInMovie
             actors={actors}
             people={people}
@@ -99,21 +118,12 @@ function MovieDetail({
 }
 
 const mapStateToProps = (state, props) => ({
-  movieByID: state.movies.movies.find(
-    (movies) => parseInt(movies.id) === parseInt(props.match.params.id)
-  ),
+  movieByID: selectMovieById(state, props.match.params.id),
+  people: selectAllPeople(state),
+  actors: selectActorsFromMovie(state, props.match.params.id),
   isLoadingMovies: state.movies.loading,
   isLoadingPeople: state.people.loading,
   isLoadingActors: state.actors.loading,
-  people: state.people.people,
-  actors: state.people.people.filter((person) =>
-    state.actors.actors
-      .filter(
-        (rel) => parseInt(rel.movie_id) === parseInt(props.match.params.id)
-      )
-      .map((x) => x.person_id)
-      .includes(person.id)
-  ),
   error: state.movies.error,
 });
 const mapDispatchToProps = {

@@ -4,6 +4,7 @@ import { peopleValidationSchema } from "./validationSchema";
 import FormStructure from "./FormStructure";
 import { connect } from "react-redux";
 import { createPeople, editPeopleByID } from "../../ducks/people/operations";
+import { selectPeopleByID } from "../../ducks/people/selectors"
 import { useHistory } from "react-router-dom";
 
 function PeopleForm({ createPeople, editPeopleByID, isLoading, peopleToEdit }) {
@@ -31,7 +32,7 @@ function PeopleForm({ createPeople, editPeopleByID, isLoading, peopleToEdit }) {
 }
 const mapStateToProps = (state, props) => ({
   isLoading: state.people.loading,
-  peopleToEdit: state.people.people.find(people => parseInt(people.id) === parseInt(props.match.params.id))
+  peopleToEdit: selectPeopleByID(state, props.match.params.id)
 });
 
 const mapDispatchToProps = {

@@ -1,7 +1,7 @@
 import { Form } from "formik";
 import Input from "./Input";
 import { useTranslation } from "react-i18next";
-import BackButton from "../../ui/UIComponents/BackButton";
+import BackButton from "../../ui/Elements/BackButton";
 
 export default function FormStructure({ isLoading, isEdit, id }) {
   const { t } = useTranslation();
@@ -25,6 +25,7 @@ export default function FormStructure({ isLoading, isEdit, id }) {
         <button
           type="submit"
           className="w-full py-4 bg-blue-400 text-white rounded text-xl hover:bg-blue-300 my-4"
+          disabled={isLoading}
         >
           {t("Edit")}
         </button>
@@ -32,8 +33,9 @@ export default function FormStructure({ isLoading, isEdit, id }) {
         <button
           type="submit"
           className="w-full py-4 bg-blue-400 text-white rounded text-xl hover:bg-blue-300 my-4"
+          disabled={isLoading}
         >
-          {t("Edit")}
+          {isLoading ? "Loading..." : t("Add")}
         </button>
       )}
     </Form>

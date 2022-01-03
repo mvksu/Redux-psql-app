@@ -1,92 +1,54 @@
-import { createAction } from 'redux-api-middleware';
-import types from './types';
+import { createAction } from "redux-api-middleware";
+import types from "./types";
+import { schema, normalize } from "normalizr";
 
-/*
-[
-    {
-        id: 'xyz1',
-        firstName: 'Tomasz'
-    },
-    {
-        id: 'xyy2',
-        firstName: "Natalia"
-    },
-    {
-        id: 'zz3',
-        firstName: 'Paweł'
-    }
-]
+const personSchema = new schema.Entity("people");
+const peopleSchema = new schema.Array(personSchema);
 
-{
-    ids: [ 'xyz1', 'xyy2', 'zz3' ],
-    byId: {
-        'xyz1': {
-            id: 'xyz1',
-            firstName: 'Tomasz'
-        },
-        'xyy2': {
-            id: 'xyy2',
-            firstName: 'Natalia
-        },
-        'zz3': {
-            id: 'zz3',
-            firstName: 'Paweł'
-        }
-    }
-}
-
-users.filter(user => user.id === id);
-
-
-{
-    byId: {
-        1: {
-
-        },
-        2: {
-
-        }
-    }
-    ids: [
-        1, 2, 3, 4, 5, 6, 7, 8
-     ]
-}
-
-
-
-
-
-
-*/
 export const getPeopleList = () => {
-    return createAction({
-        endpoint: 'http://localhost:5000/api/persons',
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+  return createAction({
+    endpoint: "http://localhost:5000/api/persons",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    types: [
+      types.PEOPLE_LIST_REQUEST,
+      {
+        type: types.PEOPLE_LIST_SUCCESS,
+        payload: async (action, state, res) => {
+          const json = await res.json();
+          const { entities } = normalize(json, peopleSchema);
+          return entities;
         },
-        types: [
-            types.PEOPLE_LIST_REQUEST,
-            types.PEOPLE_LIST_SUCCESS,
-            types.PEOPLE_LIST_FAILURE
-        ]
-    })
-}
+        meta: { actionType: types.PEOPLE_LIST_SUCCESS },
+      },
+      types.PEOPLE_LIST_FAILURE,
+    ],
+  });
+};
 
-// export const getPeopleByID = (id) => {
-//     return createAction({
-//         endpoint: `http://localhost:5000/api/persons/${id}`,
-//         method: 'GET',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         types: [
-//             types.PEOPLE_FETCH_BY_ID_REQUEST,
-//             types.PEOPLE_FETCH_BY_ID_SUCCESS,
-//             types.PEOPLE_FETCH_BY_ID_FAILURE
-//         ]
-//     })
-// }
+export const deletePeopleByID = (id) => {
+  return createAction({
+    endpoint: `http://localhost:5000/api/persons/${id}`,
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    types: [
+      types.PEOPLE_DELETE_BY_ID_REQUEST,
+      {
+        type: types.PEOPLE_DELETE_BY_ID_SUCCESS,
+        payload: async (action, state, res) => {
+          const { entities } = normalize( { id: id}, personSchema);
+          return entities;
+        },
+        meta: { actionType: types.PEOPLE_DELETE_BY_ID_SUCCESS },
+      },
+      types.PEOPLE_DELETE_BY_ID_FAILURE,
+    ],
+  });
+};
 
 
 export const createPeople = (newPerson) => {
@@ -99,30 +61,18 @@ export const createPeople = (newPerson) => {
         body: JSON.stringify(newPerson),
         types: [
             types.PEOPLE_CREATE_REQUEST,
-            types.PEOPLE_CREATE_SUCCESS,
+            {
+              type: types.PEOPLE_CREATE_SUCCESS,
+              payload: async (action, state, res) => {
+                const json = await res.json();
+                const { entities } = normalize(json, personSchema);
+                return entities;
+              },
+              meta: { actionType: types.PEOPLE_CREATE_SUCCESS },
+            },
             types.PEOPLE_CREATE_FAILURE
         ]
     })
-}
-
-
-export const deletePeopleByID = (id) => {
-    return createAction({
-        endpoint: `http://localhost:5000/api/persons/${id}`,
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        types: [
-            types.PEOPLE_DELETE_BY_ID_REQUEST,
-            { 
-                type: types.PEOPLE_DELETE_BY_ID_SUCCESS,
-                payload: id
-            },
-            types.PEOPLE_DELETE_BY_ID_FAILURE
-        ]
-    })
-    
 }
 
 
@@ -137,11 +87,15 @@ export const editPeopleByID = (editedValues) => {
         types: [
             types.PEOPLE_EDIT_BY_ID_REQUEST,
             {
-                type: types.PEOPLE_EDIT_BY_ID_SUCCESS,
-                payload: editedValues
+              type: types.PEOPLE_EDIT_BY_ID_SUCCESS,
+              payload: async (action, state, res) => {
+                const { entities } = normalize(editedValues, personSchema);
+                return entities;
+              },
+              meta: { actionType: types.PEOPLE_EDIT_BY_ID_SUCCESS },
             },
             types.PEOPLE_EDIT_BY_ID_FAILURE
         ]
     })
-    
+
 }

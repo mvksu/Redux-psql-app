@@ -5,20 +5,26 @@ import FormStructure from "./FormStructure";
 import { connect } from "react-redux";
 import { createMovies, editMoviesByID } from "../../ducks/movies/operations";
 import { useHistory } from "react-router-dom";
+import { selectMovieById } from "../../ducks/movies/selectors";
+import { selectAllPeople } from "../../ducks/people/selectors";
 
-function MoviesForm({ createMovies, editMoviesByID, isLoading, movieToEdit, people }) {
+function MoviesForm({
+  createMovies,
+  editMoviesByID,
+  isLoading,
+  movieToEdit,
+  people,
+}) {
   const history = useHistory();
 
   return (
     <Formik
       onSubmit={(values) => {
         if (movieToEdit) {
-          const fixedValues = {...values, director: people.find(people => parseInt(people.id) === parseInt(values.director))}
-          editMoviesByID(fixedValues);
+          editMoviesByID({...values, director_id: parseInt(values.director_id)});
           history.push("/movies");
         } else {
-          const fixedValues = {...values, director: people.find(people => parseInt(people.id) === parseInt(values.director))}
-          createMovies(fixedValues);
+          createMovies(values);
           history.push("/movies");
         }
       }}
@@ -35,10 +41,8 @@ function MoviesForm({ createMovies, editMoviesByID, isLoading, movieToEdit, peop
 }
 const mapStateToProps = (state, props) => ({
   isLoading: state.movies.loading,
-  movieToEdit: state.movies.movies.find(
-    (movies) => parseInt(movies.id) === parseInt(props.match.params.id)
-  ),
-  people: state.people.people
+  movieToEdit: selectMovieById(state, props.match.params.id),
+  people: selectAllPeople(state),
 });
 
 const mapDispatchToProps = {

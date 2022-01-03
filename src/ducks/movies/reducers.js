@@ -1,9 +1,9 @@
 import types from "./types";
 
 const initState = {
-  movies: [],
   loading: true,
   error: "",
+  notificationStack: [],
 };
 
 export const moviesReducer = (state = initState, action) => {
@@ -12,28 +12,47 @@ export const moviesReducer = (state = initState, action) => {
     case types.MOVIES_LIST_REQUEST:
       return { ...state, loading: true };
     case types.MOVIES_LIST_SUCCESS:
-      return { movies: action.payload, loading: false, error: "" };
+      return { ...state, loading: false, error: "" };
     case types.MOVIES_LIST_FAILURE:
-      return { ...state, error: "Wystąpił błąd", loading: false };
+      return {
+        ...state,
+        error: "Wystąpił błąd",
+        loading: false,
+        notificationStack: [
+          ...state.notificationStack,
+          { type: "red", msg: "Unsuccesful list fetch" },
+        ],
+      };
 
     //MOVIES CREATE
     case types.MOVIES_CREATE_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true};
     case types.MOVIES_CREATE_SUCCESS:
       return {
-        movies: [...state.movies, action.payload],
         loading: false,
         error: "",
+        notificationStack: [
+          ...state.notificationStack,
+          { type: "green", msg: "Successful creation" },
+        ],
       };
     case types.MOVIES_CREATE_FAILURE:
-      return { ...state, error: "Wystąpił błąd", loading: false };
+      return {
+        ...state,
+        error: "Wystąpił błąd",
+        loading: false,
+        notificationStack: [
+          ...state.notificationStack,
+          { type: "red", msg: "Unsuccesful creation" },
+        ],
+      };
 
     //MOVIE BY ID FETCH
     case types.MOVIES_BY_ID_REQUEST:
       return { ...state, loading: true };
     case types.MOVIES_BY_ID_SUCCESS:
       return {
-        movies: [...state.movies, action.payload],
+        ...state,
         loading: false,
         error: "",
       };
@@ -42,54 +61,89 @@ export const moviesReducer = (state = initState, action) => {
         ...state,
         error: "Sorry, we can't find the movie :(",
         loading: false,
+        notificationStack: [
+          ...state.notificationStack,
+          { type: "red", msg: "Unsuccesful edi" },
+        ],
       };
 
     //MOVIES BY ID DELETE
     case types.MOVIES_DELETE_BY_ID_REQUEST:
       return { ...state, loading: true };
     case types.MOVIES_DELETE_BY_ID_SUCCESS:
-      console.log(action.payload);
       return {
-        movies: state.movies.filter(
-          (movie) => parseInt(movie.id) !== parseInt(action.payload)
-        ),
         loading: false,
         error: "",
+        notificationStack: [
+          ...state.notificationStack,
+          { type: "blue", msg: "Succesful delete" },
+        ],
       };
     case types.MOVIES_DELETE_BY_ID_FAILURE:
-      return { ...state, error: "Wystąpił błąd", loading: false };
+      return {
+        ...state,
+        error: "Wystąpił błąd",
+        loading: false,
+        notificationStack: [
+          ...state.notificationStack,
+          { type: "red", msg: "Unsuccesful delete" },
+        ],
+      };
 
     //MOVIE BY ID EDIT
     case types.MOVIES_EDIT_BY_ID_REQUEST:
       return { ...state, loading: true };
     case types.MOVIES_EDIT_BY_ID_SUCCESS:
       return {
-        movies: state.movies.map((people) =>
-          parseInt(people.id) === parseInt(action.payload.id)
-            ? action.payload
-            : people
-        ),
         loading: false,
         error: "",
+        notificationStack: [
+          ...state.notificationStack,
+          { type: "green", msg: "Successful edit" },
+        ],
       };
     case types.MOVIES_EDIT_BY_ID_FAILURE:
-      return { ...state, error: "Wystąpił błąd", loading: false };
+      return {
+        ...state,
+        error: "Wystąpił błąd",
+        loading: false,
+        notificationStack: [
+          ...state.notificationStack,
+          { type: "red", msg: "Unsuccesful edit" },
+        ],
+      };
 
     //MOVIE BY ID CHANGE DIR
     case types.MOVIES_CHANGE_DIR_REQUEST:
       return { ...state, loading: true };
     case types.MOVIES_CHANGE_DIR_SUCCESS:
       return {
-        movies: state.movies.map((movie) =>
-          parseInt(movie.id) === parseInt(action.payload.id)
-            ? { ...movie, director_id: action.payload.newDir.id }
-            : movie
-        ),
         loading: false,
         error: "",
+        notificationStack: [
+          ...state.notificationStack,
+          { type: "green", msg: "Succesful creation" },
+        ],
       };
     case types.MOVIES_CHANGE_DIR_FAILURE:
-      return { ...state, error: "Wystąpił błąd", loading: false };
+      return {
+        ...state,
+        error: "Wystąpił błąd",
+        loading: false,
+        notificationStack: [
+          ...state.notificationStack,
+          { type: "red", msg: "Unsuccesful dir change" },
+        ],
+      };
+
+    case "MOVIES_NOTIFICATION_REMOVE":
+      return {
+        loading: false,
+        error: "Wystąpił błąd",
+        notificationStack: state.notificationStack.filter(
+          (x, index) => index !== action.payload
+        ),
+      };
 
     default:
       return state;

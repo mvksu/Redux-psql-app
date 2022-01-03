@@ -7,7 +7,7 @@ import Movies from "./ui/Movies/Main/Movies"
 import PeopleForm from "./forms/PeopleForm/PeopleForm"
 import MoviesForm from "./forms/MoviesForm/MoviesForm"
 import StatsPage from "./ui/Stats/StatsPage";
-import ErrorPage from "./ui/UIComponents/ErrorPage";
+import ErrorPage from "./ui/Elements/ErrorPage";
 
 function App() {
   return (

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 
+
 export default function Notifications() {
   const stack = useSelector((state) => state.movies.notificationStack);
   const dispatch = useDispatch()

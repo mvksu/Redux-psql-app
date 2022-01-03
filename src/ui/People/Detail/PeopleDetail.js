@@ -1,6 +1,7 @@
 import face from "../../../images/face.jpeg";
 import defaultimg from "../../../images/default-movie.png";
-import BackButton from "../../UIComponents/BackButton";
+import BackButton from "../../Elements/BackButton";
+import ErrorPage from "../../Elements/ErrorPage";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { deletePeopleByID } from "../../../ducks/people/operations";
@@ -8,10 +9,14 @@ import { getPeopleList } from "../../../ducks/people/operations";
 import { getActorsList } from "../../../ducks/actors/operations";
 import { getMoviesList } from "../../../ducks/movies/operations";
 import { useEffect, useState } from "react";
-import ErrorPage from "../../UIComponents/ErrorPage";
 import { Link } from "react-router-dom";
 import DeleteModal from "./DeleteModal";
 import { useTranslation } from "react-i18next";
+import {
+  selectPeopleByID,
+  selectMoviesDirected,
+  selectMoviesStarredIn,
+} from "../../../ducks/people/selectors";
 
 function PeopleDetail({
   getActorsList,
@@ -52,6 +57,9 @@ function PeopleDetail({
         showModal={showModal}
         setShowModal={setShowModal}
         handleDelete={handleDelete}
+        canYouDelete={
+          moviesStarredIn.length === 0 && moviesDirected.length === 0
+        }
       />
 
       {isLoading ? (
@@ -91,36 +99,12 @@ function PeopleDetail({
               </h2>
             </div>
           </div>
-          <h2 className="text-black text-md mt-12">{t("Starring in:")}</h2>
-          {moviesStarredIn.map((movie) => (
-            <Link
-              to={`/movies/details/${movie.id}`}
-              className="bg-white my-4 rounded flex font-blue hover:ring-2 ring-blue-300 cursor-pointer"
-              key={movie.id}
-            >
-              <div className="w-32 ">
-                <img
-                  src={movie.image_url ? movie.image_url : defaultimg}
-                  alt=""
-                  className="rounded-l"
-                />
-              </div>
-              <div className="grid grid-cols-4 justify-items-center w-full items-center">
-                <h3 className="text-blue-400">{movie.id}</h3>
-                <h3 className="text-blue-400">{movie.title}</h3>
-                <h3 className="text-blue-400">{movie.genre}</h3>
-                <h3 className="text-blue-400">
-                  {movie.release_date.substring(0, 4)}
-                </h3>
-              </div>
-            </Link>
-          ))}
-          {moviesDirected.length > 0 && (
+          {moviesStarredIn.length > 0 && (
             <div>
-              <h2 className="text-black text-md">{t("Directed")}</h2>
-              {moviesDirected.map((movie) => (
+              <h2 className="text-black text-md mt-12">{t("Starring in:")}</h2>
+              {moviesStarredIn.map((movie) => (
                 <Link
-                  to={`/p`}
+                  to={`/movies/details/${movie.id}`}
                   className="bg-white my-4 rounded flex font-blue hover:ring-2 ring-blue-300 cursor-pointer"
                   key={movie.id}
                 >
@@ -132,7 +116,35 @@ function PeopleDetail({
                     />
                   </div>
                   <div className="grid grid-cols-4 justify-items-center w-full items-center">
-                    <h3 className="text-blue-400">{movie.id}</h3>
+                    <h3 className="text-blue-400"><span className="text-cyan">#</span>{movie.id}</h3>
+                    <h3 className="text-blue-400">{movie.title}</h3>
+                    <h3 className="text-blue-400">{movie.genre}</h3>
+                    <h3 className="text-blue-400">
+                      {movie.release_date.substring(0, 4)}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+          {moviesDirected.length > 0 && (
+            <div>
+              <h2 className="text-black text-md">{t("Directed")}</h2>
+              {moviesDirected.map((movie) => (
+                <Link
+                  to={`/movies/details/${movie.id}`}
+                  className="bg-white my-4 rounded flex font-blue hover:ring-2 ring-blue-300 cursor-pointer"
+                  key={movie.id}
+                >
+                  <div className="w-32 ">
+                    <img
+                      src={movie.image_url ? movie.image_url : defaultimg}
+                      alt=""
+                      className="rounded-l"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 justify-items-center w-full items-center">
+                    <h3 className="text-blue-400"><span className="text-cyan">#</span>{movie.id}</h3>
                     <h3 className="text-blue-400">{movie.title}</h3>
                     <h3 className="text-blue-400">{movie.genre}</h3>
                     <h3 className="text-blue-400">
@@ -150,22 +162,11 @@ function PeopleDetail({
 }
 
 const mapStateToProps = (state, props) => ({
-  peopleByID: state.people.people.find(
-    (people) => parseInt(people.id) === parseInt(props.match.params.id)
-  ),
+  peopleByID: selectPeopleByID(state, props.match.params.id),
   isLoading: state.people.loading,
   error: state.people.error,
-  moviesDirected: state.movies.movies.filter(
-    (m) => m.director_id === parseInt(props.match.params.id)
-  ),
-  moviesStarredIn: state.movies.movies.filter((movie) =>
-    state.actors.actors
-      .filter(
-        (actor) => parseInt(actor.person_id) === parseInt(props.match.params.id)
-      )
-      .map((movie) => movie.movie_id)
-      .includes(movie.id)
-  ),
+  moviesDirected: selectMoviesDirected(state, props.match.params.id),
+  moviesStarredIn: selectMoviesStarredIn(state, props.match.params.id),
 });
 const mapDispatchToProps = {
   deletePeopleByID,

@@ -24,6 +24,12 @@ export default function FilterMenu({ setFilterValue }) {
         <li className={`${checked === "comedy" ? "bg-blue-600 text-white" : "bg-blue-50 text-blue-600"} hover:bg-blue-500 hover:text-white rounded-md w-max px-2 py-1 m-1 cursor-pointer text-sm`} onClick={() => handleChange('comedy')}>
           {t("Comedy")}
         </li>
+        <li className={`${checked === "5actorsover" ? "bg-blue-600 text-white" : "bg-blue-50 text-blue-600"} hover:bg-blue-500 hover:text-white rounded-md w-max px-2 py-1 m-1 cursor-pointer text-sm`} onClick={() => handleChange('5actorsover')}>
+          Over 5 actors
+        </li>
+        <li className={`${checked === "5actorsless" ? "bg-blue-600 text-white" : "bg-blue-50 text-blue-600"} hover:bg-blue-500 hover:text-white rounded-md w-max px-2 py-1 m-1 cursor-pointer text-sm`} onClick={() => handleChange('5actorsless')}>
+          Less than 5 actors
+        </li>
 
       </ul>
     </div>

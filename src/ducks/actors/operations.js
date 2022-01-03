@@ -1,5 +1,9 @@
 import { createAction } from 'redux-api-middleware';
 import types from './types';
+import { schema, normalize} from 'normalizr';
+
+const actorSchema = new schema.Entity('actors');
+const actorsSchema = new schema.Array(actorSchema);
 
 
 export const getActorsList = () => {
@@ -11,7 +15,15 @@ export const getActorsList = () => {
         },
         types: [
             types.ACTORS_LIST_REQUEST,
-            types.ACTORS_LIST_SUCCESS,
+            {
+                type: types.ACTORS_LIST_SUCCESS,
+                payload: async (action, state, res) => {
+                    const json = await res.json();
+                    const { entities } = normalize(json, actorsSchema)
+                    return entities;
+                },
+                meta: { actionType: types.ACTORS_LIST_SUCCESS }
+           },
             types.ACTORS_LIST_FAILURE
         ]
     })
@@ -28,10 +40,15 @@ export const addActor = (movieId, actor) => {
         body: JSON.stringify(actor),
         types: [
             types.ACTORS_ADD_ACTOR_REQUEST,
-            { 
+            {
                 type: types.ACTORS_ADD_ACTOR_SUCCESS,
-                payload: { movieId, actor}
-            },
+                payload: async (action, state, res) => {
+                    const json = await res.json();
+                    const { entities } = normalize(json, actorSchema)
+                    return entities;
+                },
+                meta: { actionType: types.ACTORS_ADD_ACTOR_SUCCESS }
+           },
             types.ACTORS_ADD_ACTOR_FAILURE
         ]
     })   
@@ -47,10 +64,14 @@ export const deleteActor = (movieId, personId) => {
         },
         types: [
             types.ACTORS_ACTOR_DEL_REQUEST,
-            { 
+            {
                 type: types.ACTORS_ACTOR_DEL_SUCCESS,
-                payload: { movieId, personId}
-            },
+                payload: async (action, state, res) => {
+                    const { entities } = normalize({ id: movieId, personId: personId}, actorSchema)
+                    return entities;
+                },
+                meta: { actionType: types.ACTORS_ACTOR_DEL_SUCCESS }
+           },
             types.ACTORS_ACTOR_DEL_FAILURE
         ]
     })

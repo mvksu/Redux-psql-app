@@ -6,38 +6,44 @@ import Pagination from "./Pagination";
 import Items from "./Items";
 import { getPeopleList } from "../../../ducks/people/operations";
 import { getMoviesList } from "../../../ducks/movies/operations";
+import { getActorsList } from "../../../ducks/actors/operations";
 import { connect } from "react-redux";
 import sortByValue from "../../../helpers/sortByValue";
 import filterByValue from "../../../helpers/filterByValue";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { selectAllPeople } from "../../../ducks/people/selectors";
+import { selectAllMovies } from "../../../ducks/movies/selectors";
+import { selectAllActors } from "../../../ducks/actors/selectors";
+import Notifications from "./Notifications/Notifications";
 
-function Movies({ getMoviesList, getPeopleList, loading, movies, people }) {
+function Movies({ getMoviesList, getPeopleList, getActorsList, loading, movies, people, actors }) {
   const [page, setPage] = useState(1);
   const [filterValue, setFilterValue] = useState("all");
   const [sortValue, setSortValue] = useState("first_name");
   const [searchValue, setSearchValue] = useState("");
   const { t } = useTranslation();
-  const directors = movies.map((movie) => movie.director_id);
+  const directorsIds = movies.map((movie) => movie.director_id);
+  const actorsIds = actors.map((rel) => rel.person_id);
 
   useEffect(() => {
     if (people.length === 0) {
       getPeopleList();
-    }
-    if (movies.length === 0) {
       getMoviesList();
+      getActorsList();
     }
   }, []);
 
   const currentItems = filterByValue(
     sortByValue(movies, sortValue, 1),
     filterValue,
-    directors
+    directorsIds,
+    actorsIds
   )
     .filter((item) =>
       item.title.toLowerCase().includes(searchValue.toLowerCase())
     )
-    .slice(page * 4 - 4, page * 4);
+    
 
   const variants = {
     visible: { opacity: 1, y: 0 },
@@ -50,6 +56,7 @@ function Movies({ getMoviesList, getPeopleList, loading, movies, people }) {
         <div>Loading...</div>
       ) : (
         <div>
+          <Notifications />
           <motion.div
             className="w-full grid grid-cols-2 gap-6 sm:grid-cols-3"
             initial="hidden"
@@ -63,8 +70,7 @@ function Movies({ getMoviesList, getPeopleList, loading, movies, people }) {
               </h2>
               <h3 className="text-gray-100 text-sm">
                 <p className="hidden md:inline">
-                  {t("Thereis")}{" "}
-                  {movies.length > 0 ? t("are") : t("is")}
+                  {t("Thereis")} {movies.length > 0 ? t("are") : t("is")}
                 </p>{" "}
                 {movies.length} {t("movies")}
               </h3>
@@ -76,22 +82,23 @@ function Movies({ getMoviesList, getPeopleList, loading, movies, people }) {
               setSearchValue={setSearchValue}
             />
           </motion.div>
-          <Items items={currentItems} />
-          <Pagination items={movies} paginate={setPage} currentPage={page}/>
+          <Items items={currentItems.slice(page * 4 - 4, page * 4)} />
+          <Pagination items={currentItems} paginate={setPage} currentPage={page} />
         </div>
       )}
     </div>
   );
 }
 const mapStateToProps = (state) => ({
-  movies: state.movies.movies,
-  loading: state.movies.loading,
-  people: state.people.people,
+  people: selectAllPeople(state),
+  movies: selectAllMovies(state),
+  actors: selectAllActors(state),
 });
 
 const mapDispatchToProps = {
   getMoviesList,
   getPeopleList,
+  getActorsList
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movies);

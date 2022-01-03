@@ -1,13 +1,16 @@
 import Logo from "./Logo";
 import { FaChartLine, FaFilm, FaRegGrinBeam, FaAngleRight } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import useOnClickOutside from "../../helpers/useOneClickOutside"
 
 
 export default function Navbar() {
   const [showSideBar, setShowSideBar] = useState(false);
+  const ref = useRef()
+  useOnClickOutside(ref, () => setShowSideBar(false));
   const { t, i18n } = useTranslation();
   const lngs = {
     en: { nativeName: "EN" },
@@ -22,6 +25,8 @@ export default function Navbar() {
   };
 
   return (
+    <>
+    {showSideBar && <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>}
     <motion.nav
       className={`h-24 md:h-screen md:flex md:flex-col md:w-24 px-6 justify-center bg-white rounded-b-3xl md:rounded-r-3xl fixed w-screen transition-all ${
         showSideBar && "h-72 md:w-64 z-50 border"
@@ -30,6 +35,7 @@ export default function Navbar() {
       initial="hidden"
       animate="visible"
       transition={{ duration: 0.4 }}
+      ref={ref}
     >
       <div
         className={`md:w-full w-1/4 h-24 flex items-center justify-center top-0 absolute left-0`}
@@ -124,5 +130,6 @@ export default function Navbar() {
         ))}
       </div>
     </motion.nav>
+    </>
   );
 }

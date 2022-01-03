@@ -1,7 +1,9 @@
 import { useField } from "formik";
 
+
 const InputSelect = ({ label, options, ...props }) => {
   const [field, meta] = useField(props.name);
+
 
   return (
     <div className="py-1 w-full">
@@ -21,7 +23,7 @@ const InputSelect = ({ label, options, ...props }) => {
         {...field}
         value={meta.value ? meta.value : undefined}
       >
-        <option value={""} label={`Chose ${label.toLowerCase()}`} />
+        <option value={-1} label={`Chose ${label.toLowerCase()}`} />
         {options.map((option) =>
           option.id ? (
             <option value={option.id} key={option.id} label={`${option.first_name} ${option.last_name}`} />

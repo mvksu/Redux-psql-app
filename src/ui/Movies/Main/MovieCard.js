@@ -30,9 +30,9 @@ export default function MovieCard({
     >
       <Link
         to={`movies/details/${id}`}
-        className="group bg-white w-full rounded relative flex md:flex-col items-center col-span-2 md:col-span-1 h-40 md:h-full justify-around md:justify-between"
+        className="group bg-white w-full rounded relative grid grid-cols-4 md:grid-cols-1 justify-items-center items-center col-span-2 md:col-span-1 h-40 md:h-full justify-around md:justify-between"
       >
-        <div className="bg-blue-400 w-full h-20 rounded-t absolute hidden md:flex"></div>
+        <div className="bg-blue-400 w-full h-20 rounded-t absolute hidden md:flex top-0"></div>
         <div className="md:w-24 md:h-24 w-24 h-24 md:absolute transform bottom-1/2 left-1/2 md:-translate-x-2/4 overflow-hidden group-hover:scale-110 transition-all duration-150">
           <img
             src={image_url ? image_url : img}

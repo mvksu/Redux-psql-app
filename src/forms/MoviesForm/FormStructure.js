@@ -5,9 +5,10 @@ import { connect } from "react-redux";
 import { getPeopleList } from "../../ducks/people/operations";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import BackButton from "../../ui/UIComponents/BackButton";
+import BackButton from "../../ui/Elements/BackButton";
+import { selectAllPeople } from "../../ducks/people/selectors";
 
-function FormStructure({ isLoading, isEdit, directors, getPeopleList }) {
+function FormStructure({ isEdit, directors, getPeopleList }) {
   const { t } = useTranslation();
   useEffect(() => {
     if (directors.length === 0) {
@@ -39,7 +40,7 @@ function FormStructure({ isLoading, isEdit, directors, getPeopleList }) {
         <Input name="description" type="textarea" label={t("Description")} />
         <Input name="image_url" type="url" label={t("Image URL")} />
         <InputSelect
-          name="director"
+          name="director_id"
           label={t("Director")}
           options={directors}
         />
@@ -63,7 +64,7 @@ function FormStructure({ isLoading, isEdit, directors, getPeopleList }) {
   );
 }
 
-const mapStateToProps = (state) => ({ directors: state.people.people });
+const mapStateToProps = (state) => ({ directors: selectAllPeople(state) });
 
 const mapDispatchToProps = {
   getPeopleList,

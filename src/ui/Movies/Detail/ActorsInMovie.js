@@ -65,7 +65,7 @@ function ActorsInMovie({ people, addActor, movieId, actors, deleteActor }) {
               <img src={face} alt="" className="rounded-l" />
             </div>
             <Link to={`/people/details/${person.id}`} className="grid grid-cols-5 justify-items-center w-full items-center">
-              <h3 className="text-blue-400">{person.id}</h3>
+              <h3 className="text-blue-400"><span className="text-cyan">#</span>{person.id}</h3>
               <h3 className="text-blue-400">{person.first_name}</h3>
               <h3 className="text-blue-400">{person.last_name}</h3>
               <h3 className="text-blue-400 invisible sm:visible">
