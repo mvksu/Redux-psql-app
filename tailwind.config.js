@@ -3,15 +3,21 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
-      nunito: ["Nunito"] 
+      nunito: ["Nunito"],
   },
-    extend: {},
+    extend: {
+      colors: {
+        cyan: "#22d3ee"
+      }  
+    },
   },
   variants: {
     extend: {
+      backgroundColor: ['hover', 'focus', "disabled"],
       transitionProperty: ['hover', 'focus'],
       scale: ['active', 'group-hover', 'hover'],
       border: ['active', 'group-hover', 'hover'],
+      ringWidth: ['active', 'group-hover', 'hover'],
     },
   },
   plugins: [],

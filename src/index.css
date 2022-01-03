@@ -14,3 +14,14 @@
     }
 
   }
+
+@layer components {
+  .navLink {
+    @apply group w-full h-12 my-4 hover:bg-gray-200 rounded-full cursor-pointer flex items-center md:justify-center text-gray-400;
+  }
+  .activeNavLink {
+      @apply group w-full h-12 my-4 bg-gray-200 rounded-full cursor-pointer flex items-center md:justify-center text-black;
+    }
+  }
+
+  
