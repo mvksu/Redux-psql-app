@@ -13,6 +13,7 @@
     "framer-motion": "4.1.17",
     "i18next": "^21.6.4",
     "i18next-browser-languagedetector": "^6.1.2",
+    "lodash": "^4.17.21",
     "normalizr": "^3.6.1",
     "react": "^17.0.2",
     "react-chartjs-2": "^4.0.0",
