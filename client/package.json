@@ -33,6 +33,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
+    "build:prod": "webpack -p — env production",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
@@ -59,6 +60,7 @@
   "devDependencies": {
     "autoprefixer": "^9.8.8",
     "postcss": "^7.0.39",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
+    "webpack-cli": "^4.9.2"
   }
 }
