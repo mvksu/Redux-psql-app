@@ -32,6 +32,7 @@ export const getMoviesList = () => {
 
 
 export const createMovies = (newMovie) => {
+  console.log(newMovie)
     return createAction({
         endpoint: 'http://localhost:5000/api/movies',
         method: 'POST',
@@ -45,7 +46,7 @@ export const createMovies = (newMovie) => {
               type: types.MOVIES_CREATE_SUCCESS,
               payload: async (action, state, res) => {
                 const json = await res.json();
-                const { entities } = normalize(json, movieSchema);
+                const { entities } = normalize({...json, director_id: parseInt(newMovie.director_id)}, movieSchema);
                 return entities;
               },
               meta: { actionType: types.MOVIES_CREATE_SUCCESS },

@@ -24,12 +24,12 @@ export default function Card({ first_name, last_name, birth_date, id, index }) {
     >
       <Link to={`people/details/${id}`} className="group bg-white w-full rounded relative grid grid-cols-4 justify-items-center md:flex md:flex-col items-center col-span-2 md:col-span-1 h-40 md:h-full justify-around md:justify-between">
         <div className="bg-blue-400 w-full h-20 rounded-t absolute hidden md:flex"></div>
-        <div className="md:w-24 md:h-24 w-20 h-20 rounded-full md:absolute transform bottom-1/2 left-1/2 md:-translate-x-2/4 overflow-hidden group-hover:scale-110 transition-all duration-150">
+        <div className="md:w-24 md:h-24 w-20 h-20 rounded-full md:absolute transform bottom-1/2 left-1/2 md:-translate-x-2/4 overflow-hidden group-hover:scale-110 transition-all duration-150 my-4">
           <img src={face} alt="" className="object-contain" />
         </div>
-        <div className="md:text-center ml-2">
+        <div className="md:text-center">
           <h2 className="text-gray-400 md:mt-40 text-sm">{t("People")}</h2>
-          <h1 className="text-black text-md w-32">
+          <h1 className="text-black text-md">
             {first_name} {last_name}
           </h1>
           <h2 className="text-gray-400 text-sm">

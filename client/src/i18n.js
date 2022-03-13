@@ -21,11 +21,11 @@ i18n
         translation: {
           "People": "People",
           "Statistics": "Statistics",
-          "Movies": "Filmy",
+          // "Movies": "Filmy",
           "ludzi": "ludzi",
           "Thereis": "There",
           "ConfirmDelete": "Confirm Delete",
-          "ConfirmDeleteMsg": "CAre you sure you want delete this movie? This action cannot be undone",
+          "ConfirmDeleteMsg": "Are you sure you want delete this movie? This action cannot be undone",
           "All": "All",
           "Directors": "Directors",
           "Actors": "Actors",
@@ -67,10 +67,10 @@ i18n
       },
       pl: {
         translation: {
+          "people": "ludzi",
           "People": "Ludzie",
           "Statistics": "Statystki",
           "Movies": "Filmy",
-          "ludzi": "ludzi",
           "Thereis": "Tu jest",
           "ConfirmDelete": "Potwierdź usunięcie",
           "ConfirmDeleteMsg": "Czy jesteś pewny, zeby usunąć ten film? Ta akcja nie moze być cofnięta",
