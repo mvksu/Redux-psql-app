@@ -25,7 +25,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
 app.get("*", (req, res) => {
-  res.sendFile('./client/build/index.html')
+  res.sendFile('../client/build/index.html')
 })
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
