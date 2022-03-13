@@ -8,7 +8,7 @@ const moviesSchema = new schema.Array(movieSchema);
 
 export const getMoviesList = () => {
     return createAction({
-        endpoint: 'http://localhost:5000/api/movies',
+        endpoint: '/api/movies',
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ export const getMoviesList = () => {
 export const createMovies = (newMovie) => {
   console.log(newMovie)
     return createAction({
-        endpoint: 'http://localhost:5000/api/movies',
+        endpoint: '/api/movies',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ export const createMovies = (newMovie) => {
 
 export const deleteMoviesByID = (id) => {
     return createAction({
-        endpoint: `http://localhost:5000/api/movies/${id}`,
+        endpoint: `/api/movies/${id}`,
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export const deleteMoviesByID = (id) => {
 
 export const editMoviesByID = (editedValues) => {
     return createAction({
-        endpoint: `http://localhost:5000/api/movies/${editedValues.id}`,
+        endpoint: `/api/movies/${editedValues.id}`,
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -105,7 +105,7 @@ export const editMoviesByID = (editedValues) => {
 
 export const changeDirector = (newDir, id) => {
     return createAction({
-        endpoint: `http://localhost:5000/api/movies/${id}/director`,
+        endpoint: `/api/movies/${id}/director`,
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'

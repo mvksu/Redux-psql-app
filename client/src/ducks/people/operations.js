@@ -7,7 +7,7 @@ const peopleSchema = new schema.Array(personSchema);
 
 export const getPeopleList = () => {
   return createAction({
-    endpoint: "http://localhost:5000/api/persons",
+    endpoint: "/api/persons",
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -30,7 +30,7 @@ export const getPeopleList = () => {
 
 export const deletePeopleByID = (id) => {
   return createAction({
-    endpoint: `http://localhost:5000/api/persons/${id}`,
+    endpoint: `/api/persons/${id}`,
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -53,7 +53,7 @@ export const deletePeopleByID = (id) => {
 
 export const createPeople = (newPerson) => {
     return createAction({
-        endpoint: 'http://localhost:5000/api/persons',
+        endpoint: '/api/persons',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -78,7 +78,7 @@ export const createPeople = (newPerson) => {
 
 export const editPeopleByID = (editedValues) => {
     return createAction({
-        endpoint: `http://localhost:5000/api/persons/${editedValues.id}`,
+        endpoint: `/api/persons/${editedValues.id}`,
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

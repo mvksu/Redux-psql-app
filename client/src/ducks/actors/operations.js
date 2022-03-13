@@ -8,7 +8,7 @@ const actorsSchema = new schema.Array(actorSchema);
 
 export const getActorsList = () => {
     return createAction({
-        endpoint: `http://localhost:5000/api/actors`,
+        endpoint: `/api/actors`,
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ export const getActorsList = () => {
 
 export const addActor = (movieId, actor) => {
     return createAction({
-        endpoint: `http://localhost:5000/api/movies/${movieId}/actors`,
+        endpoint: `/api/movies/${movieId}/actors`,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -57,7 +57,7 @@ export const addActor = (movieId, actor) => {
 
 export const deleteActor = (movieId, personId) => {
     return createAction({
-        endpoint: `http://localhost:5000/api/movies/${movieId}/actors/${personId}`,
+        endpoint: `/api/movies/${movieId}/actors/${personId}`,
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
