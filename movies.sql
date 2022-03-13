@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS person (
   first_name VARCHAR(60) NOT NULL,
   last_name VARCHAR(60) NOT NULL,
   birth_date DATE NOT NULL,
-  nationality: VARCHAR(60) NOT NULL 
+  nationality VARCHAR(60) NOT NULL 
 );
 
 CREATE TABLE IF NOT EXISTS movie (

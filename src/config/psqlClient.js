@@ -12,7 +12,7 @@ const dbConnData = {
 const devConfig = `postgresql://${process.env.PGUSER || 'postgres'}:${process.env.PGPASSWORD || 'tajne'}@${process.env.PGHOST || '127.0.0.1'}:${process.env.PGPORT || 5432}/${process.env.PGDATABASE}`;
 
 const proConfig = {
-  connectionString: process.env.DATEBASE_URL || 'postgres://sdfdsgeynipxqw:1cb1bcb2d9c7f77ba5', //heroku addons
+  connectionString: process.env.DATEBASE_URL, //heroku addons
 };
 
 module.exports = new Client({
