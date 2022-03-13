@@ -35,7 +35,7 @@
   "scripts": {
     "build:prod": "webpack -p — env production",
     "start": "craco start",
-    "build": "craco build",
+    "build": "set INLINE_RUNTIME_CHUNK=false&&craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },

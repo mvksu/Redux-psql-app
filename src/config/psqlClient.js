@@ -15,7 +15,6 @@ const proConfig = {
   connectionString: process.env.DATABASE_URL
 };
 
-console.log("123", process.env.DATABASE_URL)
 
 module.exports = new Client({
   connectionString: process.env.NODE_ENV === "production" ? proConfig.connectionString : devConfig,
