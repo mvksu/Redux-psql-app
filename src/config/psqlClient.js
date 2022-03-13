@@ -16,8 +16,5 @@ const proConfig = {
 };
 
 module.exports = new Client({
-  connectionString: process.env.NODE_ENV !== "production" ? proConfig.connectionString : devConfig,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  connectionString: process.env.NODE_ENV === "production" ? proConfig.connectionString : devConfig,
 });
