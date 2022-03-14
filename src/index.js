@@ -26,7 +26,7 @@ const swaggerDocument = require('./swagger.json');
 
 app.get("*", (req, res) => {
   console.log(path.join(__dirname, '../client/build'))
-  res.sendFile('/app/client/build/index.html')
+  res.sendFile(path.join(__dirname, '../client/build'))
 })
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
