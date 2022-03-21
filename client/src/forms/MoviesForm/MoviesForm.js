@@ -7,6 +7,19 @@ import { createMovies, editMoviesByID } from "../../ducks/movies/operations";
 import { useHistory } from "react-router-dom";
 import { selectMovieById } from "../../ducks/movies/selectors";
 import { selectAllPeople } from "../../ducks/people/selectors";
+import { motion } from "framer-motion";
+
+const slideLeft = {
+  hidden: {
+    x: "-100%",
+  },
+  show: {
+    x: 0,
+  },
+  exit: {
+    x: "-100%",
+  },
+};
 
 function MoviesForm({
   createMovies,
@@ -31,10 +44,18 @@ function MoviesForm({
       validationSchema={moviesValidationSchema}
       enableReinitialize
     >
+       <motion.div
+        key={"form"}
+        initial="hidden"
+        animate="show"
+        exit="exit"
+        variants={slideLeft}
+      >
       <FormStructure
         isLoading={isLoading}
         isEdit={movieToEdit ? movieToEdit : false}
       />
+      </motion.div>
     </Formik>
   );
 }

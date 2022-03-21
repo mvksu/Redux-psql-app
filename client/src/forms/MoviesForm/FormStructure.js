@@ -4,7 +4,7 @@ import InputSelect from "./InputSelect";
 import { connect } from "react-redux";
 import { getPeopleList } from "../../ducks/people/operations";
 import { useTranslation } from "react-i18next";
-import BackButton from "../../ui/Elements/BackButton";
+import BackButton from "../../components/Elements/BackButton";
 import { selectAllPeople } from "../../ducks/people/selectors";
 
 function FormStructure({ isEdit, directors, getPeopleList }) {

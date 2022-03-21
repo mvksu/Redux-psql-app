@@ -12,6 +12,7 @@ export default function Card({ first_name, last_name, birth_date, id, index }) {
       },
     }),
     hidden: { opacity: 0 },
+    exit: { opacity: 0 },
   };
   const { t }  = useTranslation();
 
@@ -20,6 +21,7 @@ export default function Card({ first_name, last_name, birth_date, id, index }) {
       custom={index}
       initial="hidden"
       animate="visible"
+      exit="exit"
       variants={variants}
     >
       <Link to={`people/details/${id}`} className="group bg-white w-full rounded relative grid grid-cols-4 justify-items-center md:flex md:flex-col items-center col-span-2 md:col-span-1 h-40 md:h-full justify-around md:justify-between">

@@ -12,12 +12,6 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname, '../client/build')))
 
-if(process.env.NODE_ENV === 'production') {
-  //server static content
-  app.use(express.static(path.join(__dirname, '../client/build')))
-}
-console.log(path.join(__dirname, '../client/build'))
-
 app.use("/api/movies", movies);
 app.use("/api/persons", persons);
 app.use("/api/actors", actors);
@@ -25,7 +19,6 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
 app.get("*", (req, res) => {
-  console.log(path.join(__dirname, '../client/build'))
   res.sendFile(path.join(__dirname, '../client/build'))
 })
 

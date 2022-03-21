@@ -52,6 +52,7 @@ function People({
   const variants = {
     visible: { opacity: 1, y: 0 },
     hidden: { opacity: 0, y: -100 },
+    exit: { opacity: 0, y: 100}
   };
 
   return (
@@ -65,6 +66,7 @@ function People({
             className="w-full grid grid-cols-2 gap-6 sm:grid-cols-3"
             initial="hidden"
             animate="visible"
+            exit="exit"
             variants={variants}
             transition={{ duration: 0.6 }}
           >

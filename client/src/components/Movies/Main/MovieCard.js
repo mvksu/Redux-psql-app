@@ -20,12 +20,14 @@ export default function MovieCard({
       },
     }),
     hidden: { opacity: 0 },
+    exit: { opacity: 0 },
   };
   return (
     <motion.div
       custom={index}
       initial="hidden"
       animate="visible"
+      exit="exit"
       variants={variants}
     >
       <Link

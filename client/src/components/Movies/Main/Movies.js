@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import sortByValue from "../../../helpers/sortByValue";
 import filterByValue from "../../../helpers/filterByValue";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { selectAllPeople } from "../../../ducks/people/selectors";
 import { selectAllMovies } from "../../../ducks/movies/selectors";
 import { selectAllActors } from "../../../ducks/actors/selectors";
@@ -33,14 +33,14 @@ function Movies({ loading, movies, people, actors }) {
     directorsIds,
     actorsIds,
     actors
-  )
-    .filter((item) =>
-      item.title.toLowerCase().includes(searchValue.toLowerCase())
-    )
+  ).filter((item) =>
+    item.title.toLowerCase().includes(searchValue.toLowerCase())
+  );
 
   const variants = {
     visible: { opacity: 1, y: 0 },
     hidden: { opacity: 0, y: -100 },
+    exit: { opacity: 0, y: 100}
   };
 
   return (
@@ -50,33 +50,38 @@ function Movies({ loading, movies, people, actors }) {
       ) : (
         <div>
           <Notifications />
-          <motion.div
-            className="w-full grid grid-cols-2 gap-6 sm:grid-cols-3"
-            initial="hidden"
-            animate="visible"
-            variants={variants}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="bg-blue-400 rounded-md flex flex-col justify-end p-4 col-span-3 sm:col-span-1">
-              <h2 className="text-white font-extrabold text-md">
-                {t("Movies")}
-              </h2>
-              <h3 className="text-gray-100 text-sm">
-                <p className="hidden md:inline">
-                  {t("Thereis")} {movies.length > 0 ? t("are") : t("is")}
-                </p>{" "}
-                {movies.length} {t("movies")}
-              </h3>
-            </div>
-            <FilterMenu setFilterValue={setFilterValue} />
-            <Stats />
-            <Panel
-              setSortValue={setSortValue}
-              setSearchValue={setSearchValue}
-            />
-          </motion.div>
+            <motion.div
+              className="w-full grid grid-cols-2 gap-6 sm:grid-cols-3"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={variants}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="bg-blue-400 rounded-md flex flex-col justify-end p-4 col-span-3 sm:col-span-1">
+                <h2 className="text-white font-extrabold text-md">
+                  {t("Movies")}
+                </h2>
+                <h3 className="text-gray-100 text-sm">
+                  <p className="hidden md:inline">
+                    {t("Thereis")} {movies.length > 0 ? t("are") : t("is")}
+                  </p>{" "}
+                  {movies.length} {t("movies")}
+                </h3>
+              </div>
+              <FilterMenu setFilterValue={setFilterValue} />
+              <Stats />
+              <Panel
+                setSortValue={setSortValue}
+                setSearchValue={setSearchValue}
+              />
+            </motion.div>
           <Items items={currentItems.slice(page * 4 - 4, page * 4)} />
-          <Pagination items={currentItems} paginate={setPage} currentPage={page} />
+          <Pagination
+            items={currentItems}
+            paginate={setPage}
+            currentPage={page}
+          />
         </div>
       )}
     </div>
@@ -86,13 +91,13 @@ const mapStateToProps = (state) => ({
   people: selectAllPeople(state),
   movies: selectAllMovies(state),
   actors: selectAllActors(state),
-  loading: state.movies.loading
+  loading: state.movies.loading,
 });
 
 const mapDispatchToProps = {
   getMoviesList,
   getPeopleList,
-  getActorsList
+  getActorsList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movies);

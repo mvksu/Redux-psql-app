@@ -1,7 +1,7 @@
 import { Form } from "formik";
 import Input from "./Input";
 import { useTranslation } from "react-i18next";
-import BackButton from "../../ui/Elements/BackButton";
+import BackButton from "../../components/Elements/BackButton";
 
 export default function FormStructure({ isLoading, isEdit, id }) {
   const { t } = useTranslation();

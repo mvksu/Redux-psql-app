@@ -1,8 +1,9 @@
 import Card from "./Card";
+import { motion } from "framer-motion";
 
 export default function Items({ items }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 cursor-pointer">
+    <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 cursor-pointer">
       {items.map((item, index) => (
         <Card
           key={item.id}
@@ -13,6 +14,6 @@ export default function Items({ items }) {
           index={index}
         />
       ))}
-    </div>
+    </motion.div>
   );
 }
